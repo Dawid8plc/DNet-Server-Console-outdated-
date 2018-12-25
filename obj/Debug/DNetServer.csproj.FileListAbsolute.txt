@@ -1,0 +1,7 @@
+D:\Projects\DNetServer\DNetServer\bin\Debug\DNetServer.exe.config
+D:\Projects\DNetServer\DNetServer\bin\Debug\DNetServer.exe
+D:\Projects\DNetServer\DNetServer\bin\Debug\DNetServer.pdb
+D:\Projects\DNetServer\DNetServer\obj\Debug\DNetServer.csprojAssemblyReference.cache
+D:\Projects\DNetServer\DNetServer\obj\Debug\DNetServer.csproj.CoreCompileInputs.cache
+D:\Projects\DNetServer\DNetServer\obj\Debug\DNetServer.exe
+D:\Projects\DNetServer\DNetServer\obj\Debug\DNetServer.pdb
