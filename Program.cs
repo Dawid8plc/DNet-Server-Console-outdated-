@@ -87,7 +87,7 @@ namespace DNetServer
 
                     PThread2.Start();
 
-                    int i;
+                    break;
 
                     // Loop to receive all the data sent by the client.
                     //while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
@@ -139,8 +139,7 @@ namespace DNetServer
             }
 
 
-            System.Console.WriteLine("\nHit enter to continue...");
-            System.Console.Read();
+            System.Console.WriteLine("Server ready");
         }
 
         
