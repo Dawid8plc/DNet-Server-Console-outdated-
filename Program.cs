@@ -27,6 +27,8 @@ namespace DNetServer
         public static List<string> connections = new List<string>();
         public static void Main(string[] args)
         {
+            Console.WriteLine("Starting up DNet_Server...");
+
             TcpListener server = null;
             try
             {
