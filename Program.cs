@@ -79,6 +79,14 @@ namespace DNetServer
                     P1Stream = Player1.GetStream();
                     P2Stream = Player2.GetStream();
 
+                    Byte[] gamestarted = System.Text.Encoding.ASCII.GetBytes("Game/Server/Started");
+
+                    System.Console.WriteLine("Telling the Clients that the game started...");
+                    P1Stream.Write(gamestarted, 0, gamestarted.Length);
+                    P2Stream.Write(gamestarted, 0, gamestarted.Length);
+
+                    
+
                     Thread PThread1 = new Thread(new ThreadStart(PListen1));
 
                     PThread1.Start();
@@ -157,10 +165,20 @@ namespace DNetServer
 
         public static void Control()
         {
-            string ye = Console.ReadLine();
-            if (ye == "conn")
+            int i = 1;
+            while (i == 1)
             {
-    
+                string input = Console.ReadLine();
+                if (input == "conn")
+                {
+                    Console.WriteLine("Currently connected IP's:");
+                    Console.WriteLine(String.Join(", ", connections.ToArray()));
+                }
+
+                if (input == "Exit")
+                {
+                    Environment.Exit(0);
+                }
             }
         }
 
@@ -176,7 +194,7 @@ namespace DNetServer
             {
                 // Translate data bytes to a ASCII string.
                 data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                System.Console.WriteLine("Received: {0}", data);
+                System.Console.WriteLine("Received from Player 1: {0}", data);
 
                 // Process the data sent by the client.
                 //data = data.ToUpper();
@@ -186,7 +204,7 @@ namespace DNetServer
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
                     // Send back a response.
                     P2Stream.Write(msg, 0, msg.Length); 
-                    System.Console.WriteLine("Sent: {0}", data);
+                    System.Console.WriteLine("Sent to Player 2: {0}", data);
                 
 
 
@@ -206,7 +224,7 @@ namespace DNetServer
             {
                 // Translate data bytes to a ASCII string.
                 data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                System.Console.WriteLine("Received: {0}", data);
+                System.Console.WriteLine("Received from Player 2: {0}", data);
 
                 // Process the data sent by the client.
                 //data = data.ToUpper();
@@ -218,7 +236,7 @@ namespace DNetServer
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
                     // Send back a response.
                     P1Stream.Write(msg, 0, msg.Length);
-                    System.Console.WriteLine("Sent: {0}", data);
+                    System.Console.WriteLine("Sent to Player 1: {0}", data);
                 
 
 
