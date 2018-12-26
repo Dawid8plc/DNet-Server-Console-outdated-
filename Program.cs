@@ -14,7 +14,7 @@ namespace DNetServer
         //Player 1 Specific
         public static TcpClient Player1;
         public static NetworkStream P1Stream;
-        public static int P1X;  
+        public static int P1X;
 
 
         //Player 2 Specific
@@ -54,12 +54,13 @@ namespace DNetServer
                     Thread thread = new Thread(new ThreadStart(Control));
 
                     thread.Start();
+                    Console.WriteLine("Type Help for a list of commands");
 
 
                     // Perform a blocking call to accept requests.
                     // You could also user server.AcceptSocket() here.
                     Player1 = server.AcceptTcpClient();
-                    
+
                     EndPoint ep = Player1.Client.RemoteEndPoint;
                     string eps = ep.ToString();
                     connections.Add(eps);
@@ -85,7 +86,7 @@ namespace DNetServer
                     P1Stream.Write(gamestarted, 0, gamestarted.Length);
                     P2Stream.Write(gamestarted, 0, gamestarted.Length);
 
-                    
+
 
                     Thread PThread1 = new Thread(new ThreadStart(PListen1));
 
@@ -137,7 +138,7 @@ namespace DNetServer
             catch (SocketException e)
             {
                 System.Console.WriteLine("SocketException: {0}", e);
-                
+
 
             }
             finally
@@ -150,7 +151,7 @@ namespace DNetServer
             System.Console.WriteLine("Server ready");
         }
 
-        
+
 
         public string returnPath()
         {
@@ -169,18 +170,33 @@ namespace DNetServer
             while (i == 1)
             {
                 string input = Console.ReadLine();
-                if (input == "conn")
+                if (input == "Connections")
                 {
-                    Console.WriteLine("Currently connected IP's:");
+                    Console.WriteLine("Currently connected IPs:");
                     Console.WriteLine(String.Join(", ", connections.ToArray()));
                 }
-
-                if (input == "Exit")
+                else if (input == "Exit")
                 {
                     Environment.Exit(0);
                 }
+                else if (input == "Help")
+                {
+                    Console.WriteLine("Available commands:");
+                    Console.WriteLine("Help (Shows this message), Connections (Shows currently connected IPs), Exit (Closes the Server)");
+                }
+                else
+                {
+                    Console.WriteLine(input + " is not a valid command");
+                }
             }
+
         }
+    
+
+
+
+        
+        
 
         public static void PListen1()
         {
@@ -194,7 +210,7 @@ namespace DNetServer
             {
                 // Translate data bytes to a ASCII string.
                 data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                System.Console.WriteLine("Received from Player 1: {0}", data);
+                System.Console.WriteLine("Player 1: {0}", data);
 
                 // Process the data sent by the client.
                 //data = data.ToUpper();
@@ -204,7 +220,6 @@ namespace DNetServer
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
                     // Send back a response.
                     P2Stream.Write(msg, 0, msg.Length); 
-                    System.Console.WriteLine("Sent to Player 2: {0}", data);
                 
 
 
@@ -224,7 +239,7 @@ namespace DNetServer
             {
                 // Translate data bytes to a ASCII string.
                 data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                System.Console.WriteLine("Received from Player 2: {0}", data);
+                System.Console.WriteLine("Player 2: {0}", data);
 
                 // Process the data sent by the client.
                 //data = data.ToUpper();
@@ -236,7 +251,6 @@ namespace DNetServer
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(data);
                     // Send back a response.
                     P1Stream.Write(msg, 0, msg.Length);
-                    System.Console.WriteLine("Sent to Player 1: {0}", data);
                 
 
 
