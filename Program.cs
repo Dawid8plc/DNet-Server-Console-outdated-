@@ -63,7 +63,7 @@ namespace DNetServer
                     EndPoint ep = Player1.Client.RemoteEndPoint;
                     string eps = ep.ToString();
                     connections.Add(eps);
-                    System.Console.WriteLine(eps + "Player 1 Connected! Waiting for the second player...");
+                    System.Console.WriteLine(eps + " Player 1 Connected! Waiting for the second player...");
 
 
                     Player2 = server.AcceptTcpClient();
@@ -71,7 +71,7 @@ namespace DNetServer
                     EndPoint ep2 = Player2.Client.RemoteEndPoint;
                     string eps2 = ep2.ToString();
                     connections.Add(eps2);
-                    System.Console.WriteLine(eps + "Player 2 Connected! What now...?");
+                    System.Console.WriteLine(eps + " Player 2 Connected! What now...?");
 
                     data = null;
 
