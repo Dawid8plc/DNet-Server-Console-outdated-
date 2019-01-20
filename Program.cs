@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace DNetServer
 {
@@ -22,22 +23,44 @@ namespace DNetServer
         public static NetworkStream P2Stream;
         public static int P2X;
 
-
+        //Config file variables
+        public static string IP;
+        public static int Port;
+        
 
         public static List<string> connections = new List<string>();
         public static void Main(string[] args)
         {
             Console.WriteLine("Starting up DNet_Server...");
 
+
+            //load this shit
+            string[] TestDialog = new string[] { "Shit=10" };
+
+            var dic = File.ReadAllLines("CONFIG.txt").Select(l => l.Split(new[] { '=' })).ToDictionary(s => s[0].Trim(), s => s[1].Trim());
+
+
+            var PIECEOFSHIT = TestDialog.Select(l => l.Split(new[] { '=' })).ToDictionary(s => s[0].Trim(), s => s[1].Trim());
+
+            string ANOTHERPIECEOFSHIT = PIECEOFSHIT["Shit"];
+            Console.WriteLine(ANOTHERPIECEOFSHIT);
+
+            string serverIP = dic["ip"];
+            int serverPort = Int32.Parse(dic["port"]);
+            Console.WriteLine(serverIP);
+            IP = serverIP;
+            Port = serverPort;
+
+
             TcpListener server = null;
             try
             {
                 // Set the TcpListener on port 13000.
                 Int32 port = 13000;
-                IPAddress localAddr = IPAddress.Parse("192.168.0.184");
+                IPAddress localAddr = IPAddress.Parse(serverIP);
 
                 // TcpListener server = new TcpListener(port);
-                server = new TcpListener(localAddr, port);
+                server = new TcpListener(localAddr, serverPort);
 
                 // Start listening for client requests.
                 server.Start();
@@ -65,6 +88,10 @@ namespace DNetServer
                     string eps = ep.ToString();
                     connections.Add(eps);
                     System.Console.WriteLine(eps + " Player 1 Connected! Waiting for the second player...");
+                    P1Stream = Player1.GetStream();
+                    Byte[] player1indicator = System.Text.Encoding.ASCII.GetBytes("You are Player 1");
+                    P1Stream.Write(player1indicator, 0, player1indicator.Length);
+
 
 
                     Player2 = server.AcceptTcpClient();
@@ -73,11 +100,14 @@ namespace DNetServer
                     string eps2 = ep2.ToString();
                     connections.Add(eps2);
                     System.Console.WriteLine(eps + " Player 2 Connected! What now...?");
+                    P2Stream = Player2.GetStream();
+                    Byte[] player2indicator = System.Text.Encoding.ASCII.GetBytes("You are Player 2");
+                    P1Stream.Write(player2indicator, 0, player2indicator.Length);
 
                     data = null;
 
                     // Get a stream object for reading and writing
-                    P1Stream = Player1.GetStream();
+                    
                     P2Stream = Player2.GetStream();
 
                     Byte[] gamestarted = System.Text.Encoding.ASCII.GetBytes("Game/Server/Started");
@@ -182,8 +212,15 @@ namespace DNetServer
                 else if (input == "Help")
                 {
                     Console.WriteLine("Available commands:");
-                    Console.WriteLine("Help (Shows this message), Connections (Shows currently connected IPs), Exit (Closes the Server)");
+                    Console.WriteLine("Help (Shows this message), ServerConfig (Gives you the information about the server), Connections (Shows currently connected IPs), Exit (Closes the Server)");
                 }
+                else if (input == "ServerConfig")
+                {
+                    Console.WriteLine("Information about this server:");
+                    Console.WriteLine("IP: " + IP);
+                    Console.WriteLine("Port: " + Port);
+                }
+                //else if (input)
                 else
                 {
                     Console.WriteLine(input + " is not a valid command");
@@ -210,7 +247,7 @@ namespace DNetServer
             {
                 // Translate data bytes to a ASCII string.
                 data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                System.Console.WriteLine("Player 1: {0}", data);
+                System.Console.WriteLine(data);
 
                 // Process the data sent by the client.
                 //data = data.ToUpper();
@@ -239,7 +276,7 @@ namespace DNetServer
             {
                 // Translate data bytes to a ASCII string.
                 data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-                System.Console.WriteLine("Player 2: {0}", data);
+                System.Console.WriteLine(data);
 
                 // Process the data sent by the client.
                 //data = data.ToUpper();

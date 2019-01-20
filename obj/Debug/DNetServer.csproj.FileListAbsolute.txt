@@ -5,3 +5,4 @@ D:\Projects\DNetServer\DNetServer\obj\Debug\DNetServer.csprojAssemblyReference.c
 D:\Projects\DNetServer\DNetServer\obj\Debug\DNetServer.csproj.CoreCompileInputs.cache
 D:\Projects\DNetServer\DNetServer\obj\Debug\DNetServer.exe
 D:\Projects\DNetServer\DNetServer\obj\Debug\DNetServer.pdb
+D:\Projects\DNetServer\DNetServer\bin\Debug\CONFIG.txt
